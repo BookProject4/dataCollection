@@ -23,7 +23,7 @@ public class Main {
 			Elements link = doc0.select(".browse_sub a");
 			System.out.println("카테고리 개수 : "+link.size());
 			
-			for(int i=122;i<link.size();i++) {
+			for(int i=0;i<link.size();i++) {
 				//System.out.println("1 : "+link.get(i));
 				//System.out.println("2 : "+link.get(i).attr("href"));
 				//System.out.println("================================================================");
@@ -65,9 +65,8 @@ public class Main {
 						String subTitle=doc2.select(".Ere_sub1_title").text();
 						System.out.println("부제목 : "+ subTitle);
 						
-						//작가, 출판사, 출판일 묶음
+						//작가(가변 : 지은이 엮은이 옮긴이 등), 출판사, 출판일(가변 : 뒤에 원작이 있는경우 원제가 붙음) 묶음
 						String tmp=doc2.select("li[class=Ere_sub2_title]").text().trim();
-						
 						pat = Pattern.compile("(\\d{4})-(\\d{2})-(\\d{2})");
 						m = pat.matcher(tmp);
 						String tmpDate="";
@@ -77,24 +76,29 @@ public class Main {
 						Date date=sdf.parse(tmpDate);
 						System.out.println("출판일 변환 후 오라클 Date형으로 넣기 : "+date);
 						vo.setPublicationDay(date);
-						
+						///////////////////////////////////////////////////////////
 						tmp=tmp.substring(0,tmp.lastIndexOf(tmpDate));
 						String publisher=tmp.substring(tmp.lastIndexOf(')')+1);
 						System.out.println("출판사 : "+publisher);
 						vo.setPublisher(publisher);
-						
+						///////////////////////////////////////////////////////////
 						String writer=tmp.substring(0,tmp.lastIndexOf(publisher));
 						System.out.println("작가 : "+writer);
 						vo.setWriter(writer);
-						
-						
+						///////////////////////////////////////////////////////////
+						Elements tmpPrice=doc2.select(".Ritem");
+						String price=tmpPrice.get(0).text();
+						String discount=tmpPrice.get(1).text();
+						discount=discount.substring(0,discount.indexOf("원")+1);
+						System.out.println("정가 : "+price);
+						System.out.println("할인가 : "+discount);
+						vo.setPrice(price);
+						vo.setDiscount(discount);
 						
 						
 						System.out.println("================================================================");
 						//
 //						String poster=null;//찾아보기 포스터 어느부분에서 구하는지??
-//						Element price=null;//가격!!
-//						Element discount=null;//할인가!!
 //						Elements tags=null; //태그들!!
 //						Elements imgs=null; //이미지파일링크들 어떤 구분자로 나누어서 가져올지 생각 (공백??)
 //						Elements text=doc2.select(""); // 책소개!!
