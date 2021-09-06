@@ -1,5 +1,6 @@
 package book;
 import java.sql.*;
+import java.sql.Date;
 import java.util.*;
 
 public class BookDAO {
@@ -53,7 +54,7 @@ public class BookDAO {
 			ps.setString(13, vo.getImgs());//Strings 사이에 구분자 넣기 // 수집할때 수정 여기서 말고
 			ps.setString(14, vo.getContentsTable());
 			ps.setString(15, vo.getTags());//Strings 사이에 구분자 넣기 // 수집할때 수정 여기서 말고
-			ps.setString(16, vo.getPublicationDay());//String -> Date
+			ps.setDate(16, (Date) vo.getPublicationDay());
 			ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();

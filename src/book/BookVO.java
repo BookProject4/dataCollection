@@ -1,8 +1,11 @@
 package book;
 
+import java.util.Date;
+
 public class BookVO {
 	private long isbn;
-	private String category,subCategory,poster,title,subtitle,writer,publisher,etcInfo,price,discount,text,imgs,contentsTable,tags,publicationDay;
+	private String category,subCategory,poster,title,subtitle,writer,publisher,etcInfo,price,discount,text,imgs,contentsTable,tags;
+	Date publicationDay;
 	public long getIsbn() {
 		return isbn;
 	}
@@ -93,10 +96,10 @@ public class BookVO {
 	public void setTags(String tags) {
 		this.tags = tags;
 	}
-	public String getPublicationDay() {
+	public Date getPublicationDay() {
 		return publicationDay;
 	}
-	public void setPublicationDay(String publicationDay) {
+	public void setPublicationDay(Date publicationDay) {
 		this.publicationDay = publicationDay;
 	}
 	
