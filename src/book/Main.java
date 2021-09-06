@@ -30,11 +30,6 @@ public class Main {
 					for(int j=0;j<detailLinks.size();j++) {
 						//System.out.println("3 : "+detailLinks.get(j).attr("href"));
 						Document doc2= Jsoup.connect(detailLinks.get(j).attr("href")).get();
-						/*
-						 * isbn >  .conts_info_list1 li:last-child
-category > #ulCategory a:nth-child(1)
-subCategory > #ulCategory a:nth-child(2)
-						 */
 						
 						BookVO vo=new BookVO();
 						
