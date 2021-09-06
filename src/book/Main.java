@@ -91,7 +91,7 @@ public class Main {
 						
 						
 						System.out.println("================================================================");
-						
+						//
 //						String poster=null;//찾아보기 포스터 어느부분에서 구하는지??
 //						Element price=null;//가격!!
 //						Element discount=null;//할인가!!
