@@ -2,6 +2,8 @@ package book;
 import java.sql.*;
 import java.util.*;
 
+import javax.swing.plaf.basic.BasicScrollPaneUI.HSBChangeListener;
+
 public class BookDAO {
 	private Connection conn;
 	private PreparedStatement ps;
@@ -68,8 +70,9 @@ public class BookDAO {
 			getConnection();
 			while(it.hasNext()) {
 				String sql="INSERT INTO tag(name) VALUES(?)";
+				ps=conn.prepareStatement(sql);
 				ps.setString(1, it.next());
-				ps.executeUpdate();
+				ps.executeUpdate();	
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

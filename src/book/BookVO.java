@@ -1,7 +1,5 @@
 package book;
 
-import java.util.Date;
-
 public class BookVO {
 	private long isbn;
 	private String category,subCategory,poster,title,subtitle,writer,publisher,etcInfo,price,discount,infoText,imgs,contentsTable,tags,publicationDay;

@@ -1,6 +1,5 @@
 package book;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -125,7 +124,7 @@ public class Main {
 						}
 						//데이터 수집 시작할때만 주석 풀고, 수집 후 다시 주석하기
 						System.out.println("카테고리 : "+i+" 페이지 : "+p);
-						dao.tagInsert(set);	
+						dao.tagInsert(set);		
 					}
 					
 				} catch (Exception e) {
