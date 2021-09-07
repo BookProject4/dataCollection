@@ -23,7 +23,7 @@ public class Main {
 			Elements link = doc0.select(".browse_sub a");
 			System.out.println("카테고리 개수 : "+link.size());
 			
-			for(int i=0;i<link.size();i++) {
+			for(int i=333;i<link.size();i++) {
 				//System.out.println("1 : "+link.get(i));
 				//System.out.println("2 : "+link.get(i).attr("href"));
 				//System.out.println("================================================================");
@@ -64,6 +64,7 @@ public class Main {
 						
 						String subTitle=doc2.select(".Ere_sub1_title").text();
 						System.out.println("부제목 : "+ subTitle);
+						vo.setSubtitle(subTitle);
 						
 						//작가(가변 : 지은이 엮은이 옮긴이 등), 출판사, 출판일(가변 : 뒤에 원작이 있는경우 원제가 붙음) 묶음
 						String tmp=doc2.select("li[class=Ere_sub2_title]").text().trim();
@@ -94,15 +95,42 @@ public class Main {
 						System.out.println("할인가 : "+discount);
 						vo.setPrice(price);
 						vo.setDiscount(discount);
-						
-						
+						///////////////////////////////////////////////////////////
+						///////////////////////////////////////////////////////////
+						Document yes0=Jsoup.connect("http://www.yes24.com/SearchCorner/Search?domain=BOOK&query="+isbn).get();
+						String link1=yes0.select(".img_bdr").attr("href");
+						//System.out.println(link1);
+						//yes에서 poster
+						String poster=yes0.select(".img_bdr img").attr("src");
+						vo.setPoster(poster);
+						System.out.println("포스터 링크 : "+poster);
+						///////////////////////////////////////////////////////////
+						Document yes1=Jsoup.connect("http://www.yes24.com"+link1).get();
+						///////////////////////////////////////////////////////////
+						Elements tg=yes1.select(".tagArea");
+						StringBuffer sb0=new StringBuffer();
+						for(int l=0;l<tg.size();l++) {
+							sb0.append(tg.text());
+							//set을 카테고리마다 만들고, 태그 저장 후 하나의 카테고리 탐색 끝나면 태그테이블에 넣기
+							//
+							//
+						}
+						System.out.println("태그들 : "+sb0);
+						vo.setTags(sb0.toString());
+						///////////////////////////////////////////////////////////
+						String text=yes1.select("#infoset_introduce .infoWrap_txtInner").text();
+						StringBuffer sb1=new StringBuffer();
+						//System.out.println("책소개 : "+text);
+						vo.setText(text);
+						///////////////////////////////////////////////////////////	
+						String contTable=yes1.select("#infoset_toc .infoWrap_txt").text();
+						//System.out.println("목차 : "+contTable);
+						vo.setContentsTable(contTable);
+						///////////////////////////////////////////////////////////
+						String imgs=yes1.select("#infoset_chYes img").attr("src");
+						System.out.println("이미지링크 : "+imgs);
+						vo.setImgs(imgs);
 						System.out.println("================================================================");
-						//
-//						String poster=null;//찾아보기 포스터 어느부분에서 구하는지??
-//						Elements tags=null; //태그들!!
-//						Elements imgs=null; //이미지파일링크들 어떤 구분자로 나누어서 가져올지 생각 (공백??)
-//						Elements text=doc2.select(""); // 책소개!!
-//						Elements contentsTable // 목차!
 					}
 					
 				}
