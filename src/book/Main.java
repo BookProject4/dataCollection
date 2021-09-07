@@ -22,7 +22,7 @@ public class Main {
 //			System.out.println("카테고리 개수 : "+link.size());
 //			for(int i=0;i<link.size();i++)
 //				System.out.println(i+" : "+link.get(i));
-			for(int i=0;i<1;i++) {//560부터 음반 및 잡것 //599수집하다 에러 oracle.net.ns.NetException: Listener refused the connection with the following error: ORA-12519, TNS:no appropriate service handler found
+			for(int i=0;i<559;i++) {//560부터 음반 및 잡것 //599수집하다 에러 oracle.net.ns.NetException: Listener refused the connection with the following error: ORA-12519, TNS:no appropriate service handler found
 				//System.out.println("1 : "+link.get(i));
 				//System.out.println("2 : "+link.get(i).attr("href"));
 				//System.out.println("================================================================");
@@ -37,12 +37,21 @@ public class Main {
 						for(int j=0;j<detailLinks.size();j++) {
 							Document doc2= Jsoup.connect(detailLinks.get(j).attr("href")).get();
 							BookVO vo=new BookVO();
+							String title=doc2.select(".Ere_bo_title").text();
+							System.out.print("제목 : "+title);
+							vo.setTitle(title);
 							String isbn=doc2.select(".conts_info_list1 li:last-child").text();
 							Pattern pat = Pattern.compile("\\d{13}");
 							Matcher m = pat.matcher(isbn);
 							if(m.find())	isbn=m.group();
 							//System.out.println("도서번호 : "+isbn);
 							vo.setIsbn(Long.parseLong(isbn));
+							if(dao.isIsbn(Long.parseLong(isbn))) {
+								System.out.println(" -> 중복(건너뜀)");
+								continue;
+							}
+							else	System.out.println(" -> 수집");
+							
 							String cate1=doc2.select("#ulCategory li:nth-child(1) a:nth-child(1)").text();
 							//System.out.println("카테고리 : "+cate1);
 							vo.setCategory(cate1);
@@ -53,9 +62,7 @@ public class Main {
 							etcInfo=etcInfo.substring(0,etcInfo.lastIndexOf(" ISBN"));
 							//System.out.println("기타 : "+ etcInfo);
 							vo.setEtcInfo(etcInfo);
-							String title=doc2.select(".Ere_bo_title").text();
-							System.out.println("제목 : "+title);
-							vo.setTitle(title);
+							
 							String subTitle=doc2.select(".Ere_sub1_title").text();
 							//System.out.println("부제목 : "+ subTitle);
 							vo.setSubtitle(subTitle);
@@ -122,9 +129,11 @@ public class Main {
 							//데이터 수집 시작할때만 주석 풀고, 수집 후 다시 주석하기
 							dao.dataInsert(vo);
 						}
+						//한페이지당 태그 수집 부분
+						System.out.println("한 페이지 끝나고 태그 수집 부분~!");
 						//데이터 수집 시작할때만 주석 풀고, 수집 후 다시 주석하기
-						System.out.println("카테고리 : "+i+" 페이지 : "+p);
-						dao.tagInsert(set);		
+						dao.tagInsert(set);
+						
 					}
 					
 				} catch (Exception e) {

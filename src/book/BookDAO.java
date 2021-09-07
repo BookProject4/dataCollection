@@ -2,8 +2,6 @@ package book;
 import java.sql.*;
 import java.util.*;
 
-import javax.swing.plaf.basic.BasicScrollPaneUI.HSBChangeListener;
-
 public class BookDAO {
 	private Connection conn;
 	private PreparedStatement ps;
@@ -69,10 +67,20 @@ public class BookDAO {
 		try {
 			getConnection();
 			while(it.hasNext()) {
-				String sql="INSERT INTO tag(name) VALUES(?)";
+				String tmp=it.next();
+				String sql="SELECT COUNT(*) FROM tag WHERE name=?";
 				ps=conn.prepareStatement(sql);
-				ps.setString(1, it.next());
-				ps.executeUpdate();	
+				ps.setString(1, tmp);
+				ResultSet rs=ps.executeQuery();
+				rs.next();
+				int n=rs.getInt(1);
+				if(n==0) {
+					sql="INSERT INTO tag(name) VALUES(?)";
+					ps=conn.prepareStatement(sql);
+					ps.setString(1, tmp);
+					ps.executeUpdate();
+				}
+				rs.close();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -80,5 +88,24 @@ public class BookDAO {
 		finally{
 			disConnection();
 		}
+	}
+	public boolean isIsbn(long isbn) {
+		boolean b=true;
+		try {
+			getConnection();
+			String sql="SELECT COUNT(*) FROM book_info WHERE isbn="+isbn;
+			ps=conn.prepareStatement(sql);
+			ResultSet rs=ps.executeQuery();
+			rs.next();
+			int n=rs.getInt(1);
+			if(n==0)	b=false;	
+			rs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			disConnection();
+		}
+		return b;
 	}
 }
