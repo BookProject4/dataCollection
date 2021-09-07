@@ -23,13 +23,13 @@ public class Main {
 //			System.out.println("카테고리 개수 : "+link.size());
 //			for(int i=0;i<link.size();i++)
 //				System.out.println(i+" : "+link.get(i));
-			for(int i=0;i<1;i++) {//560부터 음반 및 잡것
-				Set<String> set = new HashSet<String>();//카테고리마다 태그 쭉 모아서 저장하기~!
+			for(int i=0;i<1;i++) {//560부터 음반 및 잡것 //599수집하다 에러 oracle.net.ns.NetException: Listener refused the connection with the following error: ORA-12519, TNS:no appropriate service handler found
 				//System.out.println("1 : "+link.get(i));
 				//System.out.println("2 : "+link.get(i).attr("href"));
 				//System.out.println("================================================================");
 				try {
 					for(int p=1;;p++) {
+						Set<String> set = new HashSet<String>();//페이지마다 태그 쭉 모아서 저장하기~!
 						Document doc1= Jsoup.connect("https://www.aladin.co.kr"+link.get(i).attr("href")+"&BrowseTarget=List&page="+p).get();
 						//System.out.println("현재 찾는 주소 : "+"https://www.aladin.co.kr"+link.get(i).attr("href")+"&BrowseTarget=List&page="+p);
 						//System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -122,15 +122,15 @@ public class Main {
 							vo.setImgs(imgs);
 							//데이터 수집 시작할때만 주석 풀고, 수집 후 다시 주석하기
 							dao.dataInsert(vo);
-							System.out.println("================================================================");
 						}
-						
+						//데이터 수집 시작할때만 주석 풀고, 수집 후 다시 주석하기
+						System.out.println("카테고리 : "+i+" 페이지 : "+p);
+						dao.tagInsert(set);	
 					}
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				//데이터 수집 시작할때만 주석 풀고, 수집 후 다시 주석하기
-				dao.tagInsert(set);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
