@@ -4,8 +4,8 @@ import java.util.Date;
 
 public class BookVO {
 	private long isbn;
-	private String category,subCategory,poster,title,subtitle,writer,publisher,etcInfo,price,discount,text,imgs,contentsTable,tags;
-	Date publicationDay;
+	private String category,subCategory,poster,title,subtitle,writer,publisher,etcInfo,price,discount,infoText,imgs,contentsTable,tags,publicationDay;
+	
 	public long getIsbn() {
 		return isbn;
 	}
@@ -72,11 +72,11 @@ public class BookVO {
 	public void setDiscount(String discount) {
 		this.discount = discount;
 	}
-	public String getText() {
-		return text;
+	public String getInfoText() {
+		return infoText;
 	}
-	public void setText(String text) {
-		this.text = text;
+	public void setInfoText(String infoText) {
+		this.infoText = infoText;
 	}
 	public String getImgs() {
 		return imgs;
@@ -96,10 +96,10 @@ public class BookVO {
 	public void setTags(String tags) {
 		this.tags = tags;
 	}
-	public Date getPublicationDay() {
+	public String getPublicationDay() {
 		return publicationDay;
 	}
-	public void setPublicationDay(Date publicationDay) {
+	public void setPublicationDay(String publicationDay) {
 		this.publicationDay = publicationDay;
 	}
 	

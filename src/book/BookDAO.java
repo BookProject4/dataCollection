@@ -1,6 +1,5 @@
 package book;
 import java.sql.*;
-import java.sql.Date;
 import java.util.*;
 
 public class BookDAO {
@@ -32,11 +31,11 @@ public class BookDAO {
 			e.printStackTrace();
 		}
 	}
-	//수집 -> isbn 빼고 나머지 다 스트링으로 가져옴... 수정해야됨
+	//책정보 수집
 	public void dataInsert(BookVO vo) {
 		try {
 			getConnection();
-			String sql="INSERT INTO book_info(isbn,category,subCategory,poster,title,subtitle,writer,publisher,etcInfo,price,discount,text,imgs,contentsTable,tags,publicationDay) "
+			String sql="INSERT INTO book_info(isbn,category,subCategory,poster,title,subtitle,writer,publisher,publicationDay,price,discount,etcInfo,infoText,imgs,contentsTable,tags) "
 					+ "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			ps=conn.prepareStatement(sql);
 			ps.setLong(1, vo.getIsbn());
@@ -47,19 +46,35 @@ public class BookDAO {
 			ps.setString(6, vo.getSubtitle());
 			ps.setString(7, vo.getWriter());
 			ps.setString(8, vo.getPublisher());
-			ps.setString(9, vo.getEtcInfo());
+			ps.setString(9, vo.getPublicationDay());
 			ps.setString(10, vo.getPrice());
 			ps.setString(11, vo.getDiscount());
-			ps.setString(12, vo.getText());//Strings 사이에 구분자 넣기 // 수집할때 수정 여기서 말고
-			ps.setString(13, vo.getImgs());//Strings 사이에 구분자 넣기 // 수집할때 수정 여기서 말고
-			ps.setString(14, vo.getContentsTable());
-			ps.setString(15, vo.getTags());//Strings 사이에 구분자 넣기 // 수집할때 수정 여기서 말고
-			ps.setDate(16, (Date) vo.getPublicationDay());
+			ps.setString(12, vo.getEtcInfo());
+			ps.setString(13, vo.getInfoText());
+			ps.setString(14, vo.getImgs());
+			ps.setString(15, vo.getContentsTable());
+			ps.setString(16, vo.getTags());
 			ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		finally {
+			disConnection();
+		}
+	}
+	public void tagInsert(Set<String> set) {
+		Iterator<String> it = set.iterator();
+		try {
+			getConnection();
+			while(it.hasNext()) {
+				String sql="INSERT INTO tag(name) VALUES(?)";
+				ps.setString(1, it.next());
+				ps.executeUpdate();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
 			disConnection();
 		}
 	}
