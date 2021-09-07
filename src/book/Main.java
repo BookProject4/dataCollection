@@ -22,8 +22,9 @@ public class Main {
 			Document doc0 = Jsoup.connect("https://www.aladin.co.kr/home/welcome.aspx").get();
 			Elements link = doc0.select(".browse_sub a");
 			System.out.println("카테고리 개수 : "+link.size());
-			
-			for(int i=333;i<link.size();i++) {
+//			for(int i=0;i<link.size();i++)
+//				System.out.println(i+" : "+link.get(i));
+			for(int i=0;i<560;i++) {//560부터 음반 및 잡것
 				//System.out.println("1 : "+link.get(i));
 				//System.out.println("2 : "+link.get(i).attr("href"));
 				//System.out.println("================================================================");
