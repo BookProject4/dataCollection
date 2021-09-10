@@ -108,4 +108,42 @@ public class BookDAO {
 		}
 		return b;
 	}
+	public List<Long> getIsbn() {
+		List<Long> list = new ArrayList<>();
+		try {
+			getConnection();
+			System.out.println("DB연결...");
+			String sql="SELECT isbn FROM book_info";
+			ps=conn.prepareStatement(sql);
+			ResultSet rs=ps.executeQuery();
+			int i=0;
+			while(rs.next()) {
+				list.add(rs.getLong(1));
+				i++;
+				if(i%2000==0)	System.out.println(i+"까지 읽어옴");
+			}
+			System.out.println("isbn "+i+"개 가져오기 완료");
+			rs.close();
+		}catch(Exception e){}
+		finally {
+			disConnection();
+		}
+		return list;
+	}
+	public void scoreInsert(long isbn,double d) {
+		try {
+			getConnection();
+			String sql="UPDATE book_info SET score=? WHERE isbn=?";
+			ps=conn.prepareStatement(sql);
+			ps.setDouble(1, d);
+			ps.setLong(2, isbn);
+			ps.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			disConnection();
+		}
+		
+	}
 }
